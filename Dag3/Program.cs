@@ -8,12 +8,13 @@ namespace Dag3
     {
         static void Main(string[] args)
         {
-            long startNum = 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
+            long startNum = 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
+            long endNum = 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
             var numbers = 0;
             var primes = GetPrimes((long)Math.Sqrt(4294967296));
-            Parallel.For(startNum, 4294967296, i =>
+            Parallel.For(startNum, endNum, i =>
             {
-                if (FindFactors(i, primes) == 24)
+                if (FindFactors(i, primes) == 14)
                 {
                     numbers++;
                 }
@@ -73,7 +74,7 @@ namespace Dag3
                 result++;
                 num /= 2;
 
-                if (result > 24)
+                if (result > 14)
                 {
                     return 0;
                 }
@@ -97,12 +98,12 @@ namespace Dag3
                     factor = primes[i];
                 }
 
-                if (i > 5 && result < 22)
+                if (i > 5 && result < 12)
                 {
                     return 0;
                 }
 
-                if (result > 24)
+                if (result > 14)
                 {
                     return 0;
                 }
