@@ -8,7 +8,7 @@ namespace Dag6
     {
         static void Main(string[] args)
         {
-            var nullHeavyNumbers = new List<long>();
+            long nullHeavyNumbers = 0;
 
             for (long i = 1; i <= 18163106; i++)
             {
@@ -16,11 +16,11 @@ namespace Dag6
 
                 if (iAsString.Count(a => a == '0') > iAsString.Count(a => a != '0'))
                 {
-                    nullHeavyNumbers.Add(i);
+                    nullHeavyNumbers += i;
                 }
             }
 
-            Console.WriteLine(nullHeavyNumbers.Sum());
+            Console.WriteLine(nullHeavyNumbers);
             Console.Read();
         }
     }
