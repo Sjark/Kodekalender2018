@@ -10,7 +10,7 @@ namespace Dag5
         {
             var numbers = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "7", "6", "5", "4", "3", "2", "1" };
             var addsTo42 = 0;
-            var ops = GetPermutationsWithRept(new List<string> { "+", "-", "X" }, numbers.Count - 1);
+            var ops = GetPermutationsWithRept(new List<string> { "+", "-", "" }, numbers.Count - 1);
             
             foreach (var item in ops)
             {
@@ -35,24 +35,23 @@ namespace Dag5
 
         private static bool Is42(string input)
         {
-            var inputWithoutX = input.Replace("X", "");
             var numbers = new List<long>();
             var ops = new List<char>();
             
-            for (int i = 0; i < inputWithoutX.Length; i++)
+            for (int i = 0; i < input.Length; i++)
             {
-                string character = inputWithoutX[i].ToString();
+                string character = input[i].ToString();
 
-                while ((i + 1) < inputWithoutX.Length && char.IsNumber(inputWithoutX[i + 1]))
+                while ((i + 1) < input.Length && char.IsNumber(input[i + 1]))
                 {
-                    character += inputWithoutX[++i];
+                    character += input[++i];
                 }
 
                 numbers.Add(long.Parse(character));
 
-                if (i != inputWithoutX.Length - 1)
+                if (i != input.Length - 1)
                 {
-                    ops.Add(inputWithoutX[++i]);
+                    ops.Add(input[++i]);
                 }
             }
 
