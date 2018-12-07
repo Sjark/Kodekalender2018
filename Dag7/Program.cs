@@ -9,50 +9,44 @@ namespace Dag7
     {
         static void Main(string[] args)
         {
-            var input = File.ReadAllLines("Input\\input-vekksort.txt")
-                .ToList();
+            var x = File.ReadAllLines("Input\\input-vekksort.txt")
+                .Select(a => int.Parse(a))
+                .ToArray();
 
-            for (int i = 0; i < input.Count; i++)
+            var p = new int[x.Length];
+            var m = new int[x.Length + 1];
+            var l = 0;
+
+            for (int i = 0; i < x.Length; i++)
             {
-                if (i + 2 >= input.Count)
+                var lo = 1;
+                var hi = l;
+
+                while (lo <= hi)
                 {
-                    if (i + 1 < input.Count)
+                    var mid = (int)Math.Ceiling((double)((lo + hi) / 2));
+                    if (x[m[mid]] <= x[i])
                     {
-                        var n1 = int.Parse(input[i]);
-                        var n2 = int.Parse(input[i + 1]);
-
-                        if (n1 > n2)
-                        {
-                            input.RemoveAt(i);
-                        }
-                    }
-
-                    break;
-                }
-
-                var num1 = int.Parse(input[i]);
-                var num2 = int.Parse(input[i + 1]);
-
-                if (num1 < num2)
-                {
-                    continue;
-                }
-                else
-                {
-                    var num3 = int.Parse(input[i + 2]);
-
-                    if (num3 < num2)
-                    {
-                        input.RemoveAt(i + 1);
+                        lo = mid + 1;
                     }
                     else
                     {
-                        input.RemoveAt(i--);
+                        hi = mid - 1;
                     }
+                }
+
+                var newL = lo;
+
+                p[i] = m[newL - 1];
+                m[newL] = i;
+
+                if (newL > l)
+                {
+                    l = newL;
                 }
             }
 
-            Console.WriteLine(input.Count);
+            Console.WriteLine(l);
             Console.Read();
         }
     }
