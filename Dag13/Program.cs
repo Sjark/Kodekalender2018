@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Dag13
 {
@@ -7,17 +9,63 @@ namespace Dag13
     {
         static void Main(string[] args)
         {
-            var numbers = new List<int>
+            var sw = new Stopwatch();
+            sw.Start();
+            var numbers = new List<int> { 1, 3 };
+
+            var primes = new List<int> { 3 };
+
+            var number = 4;
+            while (primes.Count < 100)
             {
-                1,
-                3
-            };
-            Console.WriteLine("Hello World!");
+                var hits = 0;
+                for (int i = 0; i < numbers.Count - 1; i++)
+                {
+                    var n1 = numbers[i];
+
+                    if (n1 >= Math.Ceiling(number / 2.0))
+                    {
+                        break;
+                    }
+
+                    for (int y = i + 1; y < numbers.Count; y++)
+                    {
+                        var n2 = numbers[y];
+
+                        if (n1 + n2 == number)
+                        {
+                            hits += 1;
+                            break;
+                        }
+                    }
+
+                    if (hits > 1)
+                    {
+                        break;
+                    }
+                }
+
+                if (hits == 1)
+                {
+                    numbers.Add(number);
+
+                    if (IsPrime(number))
+                    {
+                        primes.Add(number);
+                    }
+                }
+
+                number++;
+            }
+            
+            Console.WriteLine(primes.Sum());
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+            Console.Read();
         }
 
         static bool IsPrime(long n)
         {
-            // Corner cases 
             if (n <= 1)
             {
                 return false;
@@ -28,10 +76,6 @@ namespace Dag13
                 return true;
             }                
 
-            // This is checked so  
-            // that we can skip 
-            // middle five numbers 
-            // in below loop 
             if (n % 2 == 0 || n % 3 == 0)
             {
                 return false;
