@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Dag14
 {
@@ -14,9 +17,9 @@ namespace Dag14
                 var x = 0;
                 var y = 0;
                 var steps = 0;
-                var visitedCoords = new List<Coord>
+                var visitedCoords = new List<Point>
                 {
-                    new Coord(x, y)
+                    new Point(x, y)
                 };
 
                 while (!reader.EndOfStream)
@@ -44,7 +47,7 @@ namespace Dag14
                                 break;
                         }
 
-                        var coord = new Coord(x, y);
+                        var coord = new Point(x, y);
                         if (!visitedCoords.Contains(coord))
                         {
                             visitedCoords.Add(coord);
@@ -62,7 +65,7 @@ namespace Dag14
                 {
                     for (int ii = minY; ii <= maxY; ii++)
                     {
-                        var coord = new Coord(i, ii);
+                        var coord = new Point(i, ii);
 
                         if (!visitedCoords.Contains(coord))
                         {
@@ -71,40 +74,13 @@ namespace Dag14
                     }
                 }
 
-                Console.WriteLine(Math.Round(visitedCoords.Count / notVisitedSquares, 16).ToString().Replace(",", "."));
+                var ci = new CultureInfo(Thread.CurrentThread.CurrentCulture.Name);
+                ci.NumberFormat.NumberDecimalSeparator = ".";
+                Thread.CurrentThread.CurrentCulture = ci;
+                Console.WriteLine(Math.Round(visitedCoords.Count / notVisitedSquares, 16));
             }
 
             Console.Read();
-        }
-    }
-
-    public struct Coord : IEquatable<Coord>
-    {
-        private readonly int _x;
-        private readonly int _y;
-
-        public int X { get { return _x; } }
-        public int Y { get { return _y; } }
-
-        public Coord(int x, int y)
-        {
-            _x = x;
-            _y = y;
-        }
-
-        public override bool Equals(object other)
-        {
-            return other is Coord && Equals((Coord)other);
-        }
-
-        public bool Equals(Coord other)
-        {
-            return X == other.X && Y == other.Y;
-        }
-
-        public override int GetHashCode()
-        {
-            return X.GetHashCode() ^ Y.GetHashCode();
         }
     }
 }
