@@ -15,11 +15,6 @@ namespace Dag16
                 .Select(a => int.Parse(a))
                 .ToList();
 
-            //var input = "1,6,3,8,3,2,1,2,4"
-            //    .Split(',')
-            //    .Select(a => int.Parse(a))
-            //    .ToList();
-
             var result = LargestPrimePalindromeSum(input);
 
             Console.WriteLine(result);
@@ -56,39 +51,44 @@ namespace Dag16
             var result = 0;
             for (int i = 0; i < s.Count; i++)
             {
-                var p1 = ExpandAroundCenter(s, i, i);
-                if (p1.Count > 1)
+                var p1 = ExpandAroundCenter(s, i, i, result);
+                if (p1 > result)
                 {
-                    var p1Sum = p1.Sum();
-                    if (p1Sum > result && IsPrime(p1Sum))
-                    {
-                        result = p1Sum;
-                    }
+                    result = p1;
                 }
 
-                var p2 = ExpandAroundCenter(s, i, i + 1);
-                if (p2.Count > 1)
+                var p2 = ExpandAroundCenter(s, i, i + 1, result);
+                if (p2 > result)
                 {
-                    var p2Sum = p2.Sum();
-                    if (p2Sum > result && IsPrime(p2Sum))
-                    {
-                        result = p2Sum;
-                    }
+                    result = p2;
                 }
             }
 
             return result;
         }
 
-        private static List<int> ExpandAroundCenter(List<int> s, int i, int j)
+        private static int ExpandAroundCenter(List<int> s, int i, int j, int largestPrime)
         {
             while (i >= 0 && j < s.Count && s[i] == s[j])
             {
                 i--;
                 j++;
+
+                if (9 * (j - i) < largestPrime)
+                {
+                    continue;
+                }
+                
+                var sum = s.GetRange(i + 1, j - i - 1)
+                    .Sum();
+
+                if (sum > largestPrime && IsPrime(sum))
+                {
+                    largestPrime = sum;
+                }
             }
 
-            return s.GetRange(i + 1, j - i - 1);
+            return largestPrime;
         }
     }
 }
