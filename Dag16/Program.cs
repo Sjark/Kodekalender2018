@@ -73,18 +73,34 @@ namespace Dag16
             {
                 i--;
                 j++;
+            }
 
-                if (9 * (j - i) < largestPrime)
-                {
-                    continue;
-                }
-                
-                var sum = s.GetRange(i + 1, j - i - 1)
-                    .Sum();
+            var sum = s.GetRange(i + 1, j - i - 1)
+                .Sum();
 
-                if (sum > largestPrime && IsPrime(sum))
+            if (sum > largestPrime && IsPrime(sum))
+            {
+                largestPrime = sum;
+            }
+            else if (sum > largestPrime)
+            {
+                while (sum > largestPrime)
                 {
-                    largestPrime = sum;
+                    i++;
+                    j--;
+
+                    if ((j - i - 1) < 0)
+                    {
+                        break;
+                    }
+
+                    sum = s.GetRange(i + 1, j - i - 1)
+                        .Sum();
+
+                    if (IsPrime(sum))
+                    {
+                        largestPrime = sum;
+                    }
                 }
             }
 
