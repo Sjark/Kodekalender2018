@@ -13,7 +13,7 @@ namespace Dag16
             var input = File.ReadAllText("input\\input-palindrom.txt")
                 .Split(',')
                 .Select(a => int.Parse(a))
-                .ToList();
+                .ToArray();
 
             var result = LargestPrimePalindromeSum(input);
 
@@ -46,10 +46,10 @@ namespace Dag16
             return true;
         }
 
-        public static int LargestPrimePalindromeSum(List<int> s)
+        public static int LargestPrimePalindromeSum(int[] s)
         {
             var result = 0;
-            for (int i = 0; i < s.Count; i++)
+            for (int i = 0; i < s.Length; i++)
             {
                 var p1 = ExpandAroundCenter(s, i, i, result);
                 if (p1 > result)
@@ -67,16 +67,15 @@ namespace Dag16
             return result;
         }
 
-        private static int ExpandAroundCenter(List<int> s, int i, int j, int largestPrime)
+        private static int ExpandAroundCenter(int[] s, int i, int j, int largestPrime)
         {
-            while (i >= 0 && j < s.Count && s[i] == s[j])
+            while (i >= 0 && j < s.Length && s[i] == s[j])
             {
                 i--;
                 j++;
             }
 
-            var sum = s.GetRange(i + 1, j - i - 1)
-                .Sum();
+            var sum = SpanSum(s.AsSpan().Slice(i + 1, j - i - 1));
 
             if (sum > largestPrime && IsPrime(sum))
             {
@@ -94,8 +93,7 @@ namespace Dag16
                         break;
                     }
 
-                    sum = s.GetRange(i + 1, j - i - 1)
-                        .Sum();
+                    sum = SpanSum(s.AsSpan().Slice(i + 1, j - i - 1));
 
                     if (IsPrime(sum))
                     {
@@ -105,6 +103,18 @@ namespace Dag16
             }
 
             return largestPrime;
+        }
+
+        private static int SpanSum(Span<int> input)
+        {
+            var sum = 0;
+
+            foreach (var item in input)
+            {
+                sum += item;
+            }
+
+            return sum;
         }
     }
 }
