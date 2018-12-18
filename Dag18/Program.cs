@@ -14,7 +14,7 @@ namespace Dag18
             var i = 0;
 
             var game = new List<char>();
-            var players = new HashSet<int> { 0, 1, 2 };
+            var players = new List<int> { 0, 1, 2 };
             var results = new Dictionary<int, int>
             {
                 { 0, 0 },
@@ -33,9 +33,9 @@ namespace Dag18
 
                 if (players.Count == 1)
                 {
-                    results[players.First()]++;
+                    results[players[0]]++;
 
-                    players = new HashSet<int> { 0, 1, 2 };
+                    players = new List<int> { 0, 1, 2 };
                 }
 
                 game = new List<char>();
@@ -46,9 +46,9 @@ namespace Dag18
             Console.Read();
         }
 
-        static HashSet<int> GetWinners(List<char> game, HashSet<int> players)
+        static List<int> GetWinners(List<char> game, List<int> players)
         {
-            var winners = new HashSet<int>();
+            var winners = new List<int>();
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -60,7 +60,7 @@ namespace Dag18
                     }
                     if (Winner(game[i], game[y]))
                     {
-                        winners.Add(i);
+                        winners.Add(players[i]);
                     }
                 }
             }
@@ -70,7 +70,7 @@ namespace Dag18
                 return players;
             }
 
-            return winners;
+            return winners.Distinct().OrderBy(a => a).ToList();
         }
 
         static bool Winner(char player1, char player2)
