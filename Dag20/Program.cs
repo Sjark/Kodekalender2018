@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Dag20
@@ -15,28 +16,24 @@ namespace Dag20
                 42, 6, 1, 3337, 6, 803, 3912, 85, 31, 30, 502, 876, 8686, 813, 880, 5309, 20,
                 27, 2523, 266, 101, 8, 3058, 7, 56, 6961, 46, 199, 866, 4, 184, 4, 9675, 92 }
                     .Select(a => a.ToString())
-                    .ToList();
-
-            var longestNumber = input.Select(a => a.Length).Max();
-
-            var number = string.Join("", input.Select(a => new PaddedNumber
-                {
-                    Number = a,
-                    PNumber = a.PadRight(longestNumber, a.Last())
-                }).OrderByDescending(a => a.PNumber)
-                .Select(a => a.Number)
-            );
+                    .OrderBy(a => a, new SortByLargest())
+                    .SelectMany(a => a)
+                    .ToArray();
             
 
-            Console.WriteLine(number);
+            Console.WriteLine(new string(input));
 
             Console.Read();
         }
-    }
 
-    class PaddedNumber
-    {
-        public string Number { get; set; }
-        public string PNumber { get; set; }
+        private class SortByLargest : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                var xy = x + y;
+                var yx = y + x;
+                return xy.CompareTo(yx) > 0 ? -1 : 1;
+            }
+        }
     }
 }
