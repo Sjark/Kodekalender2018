@@ -1,0 +1,42 @@
+﻿using System;
+using System.Linq;
+
+namespace Dag20
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var input = new[] { 7096, 3, 3924, 2404, 4502, 4800, 74, 91, 9, 7, 9, 6790, 5, 59, 9, 48, 6345,
+                88, 73, 88, 956, 94, 665, 7, 797, 3978, 1, 3922, 511, 344, 6, 10, 743, 36,
+                9289, 7117, 1446, 10, 7466, 9, 223, 2, 6, 528, 37, 33, 1616, 619, 494, 48, 9,
+                5106, 144, 12, 12, 2, 759, 813, 5156, 9779, 969, 3, 257, 3, 4910, 65, 1, 907,
+                4464, 15, 8685, 54, 48, 762, 7952, 639, 3, 4, 8239, 4, 21, 306, 667, 1, 2, 90,
+                42, 6, 1, 3337, 6, 803, 3912, 85, 31, 30, 502, 876, 8686, 813, 880, 5309, 20,
+                27, 2523, 266, 101, 8, 3058, 7, 56, 6961, 46, 199, 866, 4, 184, 4, 9675, 92 }
+                    .Select(a => a.ToString())
+                    .ToList();
+
+            var longestNumber = input.Select(a => a.Length).Max();
+
+            var number = string.Join("", input.Select(a => new PaddedNumber
+                {
+                    Number = a,
+                    PNumber = a.PadRight(longestNumber, a.Last())
+                }).OrderByDescending(a => a.PNumber)
+                .Select(a => a.Number)
+            );
+            
+
+            Console.WriteLine(number);
+
+            Console.Read();
+        }
+    }
+
+    class PaddedNumber
+    {
+        public string Number { get; set; }
+        public string PNumber { get; set; }
+    }
+}
